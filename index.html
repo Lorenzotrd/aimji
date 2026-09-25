@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aimji Studio, maison digitale du luxe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Aimji Display';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/cormorant-300-normal.woff2) format('woff2')}
+@font-face{font-family:'Aimji Display';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/cormorant-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Aimji Display';font-style:italic;font-weight:300;font-display:swap;src:url(fonts/cormorant-300-italic.woff2) format('woff2')}
+:root{
+  --noir:#050507; --nuit:#0C0F14; --ecume:#F4F2EE; --pierre:#E6E1D8; --champagne:#C9AE78; --brume:#8E949E; --line:rgba(244,242,238,.16);
+  --display:'Aimji Display','Didot',Garamond,'Times New Roman',serif;
+  --text:'Tenor Sans','Gill Sans','Optima','Segoe UI',sans-serif;
+  --bg:var(--noir); --fg:var(--ecume);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --bg:var(--noir); } }
+:root[data-theme="dark"],:root[data-theme="light"]{ --bg:var(--noir); }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px); -webkit-text-size-adjust:100%}
+body{margin:0; background:var(--bg); color:var(--fg); font-family:var(--text); font-size:1rem; line-height:1.75; letter-spacing:.01em; -webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--champagne); outline-offset:4px}
+
+.nav{position:fixed; top:0; left:0; right:0; z-index:30; padding:calc(env(safe-area-inset-top,0px) + 1.5rem) clamp(1.25rem,4.5vw,4rem) 1.5rem; display:flex; justify-content:space-between; align-items:center}
+.nav .mark{font-family:var(--display); font-weight:300; font-size:1.6rem; letter-spacing:.34em; text-decoration:none}
+.nav ul{list-style:none; margin:0; padding:0; display:flex; align-items:center; gap:clamp(1.2rem,3vw,2.6rem); font-size:.75rem; letter-spacing:.2em}
+.nav ul a{text-decoration:none; opacity:.8; transition:opacity .4s}
+.nav ul a:hover{opacity:1}
+.nav .cta{border:1px solid rgba(244,242,238,.4); padding:.75rem 1.4rem; border-radius:999px; opacity:1}
+@media (max-width:720px){ .nav ul li:not(:last-child){display:none} }
+
+/* Film au scroll */
+.film{position:relative; height:1100vh; background:var(--noir)}
+.stage{position:sticky; top:0; height:100vh; height:100dvh; overflow:hidden; background:var(--noir)}
+.stage video{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:var(--noir)}
+@media (min-aspect-ratio:16/9){ .stage video{object-fit:cover} }
+.shade{position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg,rgba(5,5,7,.7),rgba(5,5,7,0) 38%), linear-gradient(0deg,rgba(5,5,7,.6),rgba(5,5,7,0) 30%)}
+
+.intro{position:absolute; left:clamp(1.25rem,6vw,6.5rem); bottom:clamp(5rem,14vh,9rem); max-width:40rem; transition:opacity 1s cubic-bezier(.19,1,.22,1), transform 1s cubic-bezier(.19,1,.22,1)}
+.intro.off{opacity:0; transform:translateY(-16px); pointer-events:none}
+.kicker{font-size:.75rem; letter-spacing:.26em; color:var(--champagne); margin:0 0 1.4rem}
+.intro h1{font-family:var(--display); font-weight:300; font-size:clamp(3.4rem,9vw,8.4rem); line-height:.9; letter-spacing:-.015em; margin:0 0 1.6rem}
+.intro p{margin:0; max-width:34ch; color:rgba(244,242,238,.82)}
+
+.chapter{position:absolute; left:clamp(1.25rem,6vw,6.5rem); bottom:clamp(4.5rem,12vh,8rem); opacity:0; transform:translateY(20px); transition:opacity .9s cubic-bezier(.19,1,.22,1), transform .9s cubic-bezier(.19,1,.22,1); pointer-events:none}
+.chapter.on{opacity:1; transform:none}
+.chapter .idx{font-size:.75rem; letter-spacing:.26em; color:var(--champagne); margin:0 0 1rem; font-variant-numeric:tabular-nums}
+.chapter h2{font-family:var(--display); font-weight:300; font-size:clamp(3rem,8vw,7.6rem); line-height:.9; letter-spacing:-.02em; margin:0}
+
+.callouts{position:absolute; right:clamp(1.25rem,5vw,5rem); top:50%; transform:translateY(-50%); list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1.6rem; pointer-events:none}
+.callouts li{display:flex; align-items:center; justify-content:flex-end; gap:1rem; font-size:.78rem; letter-spacing:.18em; opacity:0; transform:translateX(12px); transition:opacity .8s cubic-bezier(.19,1,.22,1), transform .8s cubic-bezier(.19,1,.22,1)}
+.callouts li::before{content:""; width:clamp(2rem,6vw,5.5rem); height:1px; background:linear-gradient(90deg,rgba(201,174,120,0),var(--champagne))}
+.callouts li::after{content:""; width:5px; height:5px; border-radius:50%; background:var(--champagne); order:-1; margin-right:-.6rem}
+.callouts.on li{opacity:1; transform:none}
+.callouts.on li:nth-child(2){transition-delay:.12s}
+.callouts.on li:nth-child(3){transition-delay:.24s}
+@media (max-width:720px){ .callouts{top:auto; bottom:clamp(11rem,26vh,15rem); right:1.25rem; gap:.9rem} .callouts li{font-size:.68rem} }
+
+.rail{position:absolute; left:50%; bottom:calc(env(safe-area-inset-bottom,0px) + 1.4rem); transform:translateX(-50%); display:flex; gap:.5rem}
+.rail span{width:1.8rem; height:2px; background:rgba(244,242,238,.18); overflow:hidden; position:relative}
+.rail span i{position:absolute; inset:0; background:var(--champagne); transform-origin:left; transform:scaleX(0)}
+.hint{position:absolute; right:clamp(1.25rem,4.5vw,4rem); bottom:clamp(2rem,6vh,3.5rem); font-size:.7rem; letter-spacing:.26em; color:rgba(244,242,238,.6); writing-mode:vertical-rl; transition:opacity .6s}
+.loading{position:absolute; inset:0; display:grid; place-items:center; font-size:.72rem; letter-spacing:.26em; color:var(--brume); transition:opacity .8s; pointer-events:none}
+
+/* Après le film */
+section.block{padding:clamp(7rem,18vh,12rem) clamp(1.25rem,6vw,6.5rem); background:var(--noir)}
+.wrap{max-width:1240px; margin:0 auto}
+.kicker.c{text-align:center}
+.thread{width:1px; height:clamp(5rem,14vh,9rem); margin:0 auto 3.5rem; background:linear-gradient(rgba(201,174,120,0),var(--champagne))}
+.statement{font-family:var(--display); font-weight:300; font-size:clamp(2.4rem,5.6vw,5.6rem); line-height:1.04; letter-spacing:-.015em; text-align:center; max-width:18ch; margin:0 auto}
+.statement em{font-style:italic; color:var(--champagne)}
+.sub{max-width:46ch; margin:2.6rem auto 0; text-align:center; color:#A7ADB6}
+
+.head{display:flex; justify-content:space-between; align-items:flex-end; gap:2rem; flex-wrap:wrap; margin-bottom:clamp(3rem,7vh,5rem)}
+.head h2{font-family:var(--display); font-weight:300; font-size:clamp(2.6rem,5vw,4.6rem); line-height:1; letter-spacing:-.01em; margin:0; max-width:14ch}
+.head p{margin:0; max-width:34ch; color:#A7ADB6}
+
+@media (max-width:900px){  }
+@media (max-width:560px){  }
+
+.svc{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:clamp(2rem,6vw,6rem)}
+@media (max-width:900px){ .svc{grid-template-columns:1fr} .svc .side{position:static; margin-bottom:1rem} }
+.svc .side{position:sticky; top:8rem; align-self:start}
+.svc .side h2{font-family:var(--display); font-weight:300; font-size:clamp(2.6rem,5vw,4.6rem); line-height:1; margin:0 0 1.6rem; max-width:10ch}
+.svc .side p{color:#A7ADB6; max-width:30ch; margin:0}
+.svc ul{list-style:none; margin:0; padding:0; border-top:1px solid var(--line)}
+.svc li{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:2rem; align-items:baseline; padding:2.1rem 0; border-bottom:1px solid var(--line)}
+.svc li h3{font-family:var(--display); font-weight:300; font-size:clamp(1.7rem,2.6vw,2.4rem); line-height:1.1; margin:0; transition:color .5s}
+.svc li:hover h3{color:var(--champagne)}
+.svc li p{margin:0; color:#A7ADB6; font-size:.95rem}
+@media (max-width:620px){ .svc li{grid-template-columns:1fr; gap:.6rem} }
+
+.method{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; border-top:1px solid var(--line)}
+@media (max-width:900px){ .method{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:520px){ .method{grid-template-columns:1fr} }
+.method div{padding:2.4rem 1.8rem 2.6rem 0; border-bottom:1px solid var(--line)}
+.method div + div{padding-left:1.8rem; border-left:1px solid var(--line)}
+@media (max-width:900px){ .method div:nth-child(3){border-left:0; padding-left:0} }
+@media (max-width:520px){ .method div{border-left:0 !important; padding-left:0 !important} }
+.method .n{font-family:var(--display); font-style:italic; font-weight:300; font-size:2.6rem; color:var(--champagne); line-height:1}
+.method h3{font-family:var(--display); font-weight:300; font-size:1.7rem; margin:1.4rem 0 .7rem}
+.method p{margin:0; color:#A7ADB6; font-size:.93rem}
+
+.devis{position:relative; overflow:hidden}
+.devis::before{content:""; position:absolute; left:50%; top:-30%; width:120vmax; height:80vmax; transform:translateX(-50%); background:radial-gradient(closest-side,rgba(62,63,70,.55),rgba(5,5,7,0)); pointer-events:none}
+.devis .wrap{position:relative; max-width:820px; text-align:center}
+.devis h2{font-family:var(--display); font-weight:300; font-size:clamp(3rem,7vw,6.4rem); line-height:.95; letter-spacing:-.015em; margin:0 0 1.6rem}
+.devis .lead{color:#A7ADB6; margin:0 auto; max-width:38ch}
+.box{margin-top:4rem; text-align:left}
+.steps{display:flex; justify-content:center; gap:2.4rem; flex-wrap:wrap; font-size:.7rem; letter-spacing:.22em; color:var(--brume); margin-bottom:2.8rem}
+.steps span[aria-current="step"]{color:var(--fg); border-bottom:1px solid var(--champagne); padding-bottom:.35rem}
+.step{display:none; border:0; padding:0; margin:0}
+.step.active{display:block}
+.step legend{width:100%; text-align:center; font-family:var(--display); font-size:clamp(1.6rem,2.6vw,2.2rem); font-weight:300; margin-bottom:2rem; padding:0}
+.chips{display:flex; flex-wrap:wrap; justify-content:center; gap:.7rem}
+.chips label{cursor:pointer; position:relative}
+.chips input{position:absolute; opacity:0; pointer-events:none}
+.chips span{display:inline-block; padding:.85rem 1.4rem; border:1px solid rgba(244,242,238,.2); border-radius:999px; font-size:.88rem; transition:all .4s}
+.chips span:hover{border-color:rgba(201,174,120,.6)}
+.chips input:checked + span{border-color:var(--champagne); color:var(--champagne); background:rgba(201,174,120,.08)}
+.chips input:focus-visible + span{outline:1px solid var(--champagne); outline-offset:3px}
+.grid2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.8rem 2.4rem}
+.grid2 .full{grid-column:1 / -1}
+@media (max-width:640px){ .grid2{grid-template-columns:1fr} }
+.grid2 label{font-size:.7rem; letter-spacing:.2em; color:var(--brume)}
+.grid2 input,.grid2 textarea{display:block; width:100%; font:inherit; font-size:1rem; color:var(--fg); background:transparent; border:0; border-bottom:1px solid rgba(244,242,238,.22); padding:.75rem 0; margin-top:.3rem; transition:border-color .4s}
+.grid2 input:focus,.grid2 textarea:focus{outline:0; border-bottom-color:var(--champagne)}
+.grid2 textarea{min-height:5rem; resize:vertical}
+.actions{display:flex; justify-content:center; gap:1rem; margin-top:3rem}
+.btn{font:inherit; font-size:.75rem; letter-spacing:.22em; cursor:pointer; padding:1.15rem 2.6rem; border-radius:999px; border:1px solid var(--ecume); background:var(--ecume); color:var(--noir); transition:all .5s cubic-bezier(.19,1,.22,1)}
+.btn:hover{background:var(--champagne); border-color:var(--champagne)}
+.btn.ghost{background:transparent; color:var(--fg); border-color:rgba(244,242,238,.25)}
+.btn.ghost:hover{border-color:var(--ecume)}
+.err{min-height:1.4em; margin:1.4rem 0 0; text-align:center; color:#E3B8A0; font-size:.9rem}
+.done{font-family:var(--display); font-size:2.6rem; font-weight:300; margin:0 0 .6rem; text-align:center}
+.done + p{text-align:center; color:#A7ADB6}
+
+footer{background:var(--noir); padding:clamp(4rem,10vh,7rem) clamp(1.25rem,6vw,6.5rem) calc(2.2rem + env(safe-area-inset-bottom,0px)); border-top:1px solid var(--line); overflow:hidden}
+footer .row{display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap; font-size:.72rem; letter-spacing:.2em; color:var(--brume)}
+footer .row a{text-decoration:none; transition:color .4s}
+footer .row a:hover{color:var(--champagne)}
+footer .word{font-family:var(--display); font-weight:300; font-size:clamp(5rem,23vw,22rem); line-height:.8; letter-spacing:.12em; text-align:center; margin:clamp(3rem,8vh,6rem) 0 clamp(2rem,5vh,3rem); color:transparent; -webkit-text-stroke:1px rgba(244,242,238,.22); user-select:none; white-space:nowrap}
+footer .legal{display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; font-size:.68rem; letter-spacing:.18em; color:#5F6570}
+
+.reveal{opacity:0; transform:translateY(24px); transition:opacity 1.3s cubic-bezier(.19,1,.22,1), transform 1.3s cubic-bezier(.19,1,.22,1)}
+.reveal.in{opacity:1; transform:none}
+@media (prefers-reduced-motion:reduce){ .reveal,.chapter,.callouts li,.intro{transition:none} .reveal{opacity:1; transform:none} }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Navigation principale">
+  <a class="mark" href="#top">AIMJI</a>
+  <ul>
+    <li><a href="#maison">La maison</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a class="cta" href="#devis">Demander un devis</a></li>
+  </ul>
+</nav>
+
+<header class="film" id="top">
+  <div class="stage">
+    <video id="film" src="hero-scrub.mp4" muted playsinline preload="auto" poster="poster.jpg" aria-hidden="true"></video>
+    <div class="shade"></div>
+    <div class="loading" id="loading">CHARGEMENT DU FILM</div>
+
+    <div class="intro" id="intro">
+      <p class="kicker">MAISON DIGITALE DU LUXE</p>
+      <h1>Aimji Studio</h1>
+      <p>Sites, films IA et acquisition pour les maisons d'exception. Neuf univers, un même niveau d'exigence.</p>
+    </div>
+
+    <div id="chapters"></div>
+    <ul class="callouts" id="callouts" aria-live="polite"></ul>
+    <div class="rail" id="rail" aria-hidden="true"></div>
+    <span class="hint" id="hint">FAITES DÉFILER</span>
+  </div>
+</header>
+
+<main>
+  <section class="block" id="maison" aria-labelledby="h-m">
+    <div class="wrap">
+      <div class="thread" aria-hidden="true"></div>
+      <p class="kicker c reveal">LA MAISON</p>
+      <h2 class="statement reveal" id="h-m">Nous donnons aux maisons d'exception l'image <em>qu'elles méritent.</em></h2>
+      <p class="sub reveal">Création, technique et acquisition réunies sous un même toit, portées par l'intelligence artificielle. Nous connaissons le temps que demande chaque projet, et nous le facturons au juste prix.</p>
+    </div>
+  </section>
+
+  <section class="block" id="services" aria-labelledby="h-s" style="padding-top:0">
+    <div class="wrap svc">
+      <div class="side"><p class="kicker reveal">SERVICES</p><h2 class="reveal" id="h-s">À la carte, sans forfait imposé.</h2><p class="reveal">Un service ou plusieurs. Vous choisissez ce dont votre maison a besoin.</p></div>
+      <ul><li class="reveal"><h3>Audit digital</h3><p>Offert. Une lecture complète de votre présence en ligne et les trois leviers prioritaires.</p></li><li class="reveal"><h3>Sites et applications</h3><p>Sur mesure, rapides, pensés pour une clientèle qui juge en quelques secondes.</p></li><li class="reveal"><h3>Publicité Meta et Google</h3><p>Visuels, ciblage et pilotage continu. Chaque euro investi est suivi.</p></li><li class="reveal"><h3>Référencement naturel</h3><p>Être trouvé en tête de Google, avec un trafic qualifié qui s’accumule.</p></li><li class="reveal"><h3>Films IA et contenus</h3><p>La qualité du film ci dessus, sans les délais ni le budget d’un tournage.</p></li><li class="reveal"><h3>UGC et ambassadrices</h3><p>Des créateurs et des visages choisis pour votre univers.</p></li><li class="reveal"><h3>E‑mailing et CRM</h3><p>Garder le lien avec chaque client, et faire revenir les meilleurs.</p></li><li class="reveal"><h3>Agents IA</h3><p>Un concierge digital qui répond, qualifie et automatise, jour et nuit.</p></li></ul>
+    </div>
+  </section>
+
+  <section class="block" id="methode" aria-labelledby="h-me" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2 class="reveal" id="h-me">Comment nous travaillons.</h2><p class="reveal">Quatre étapes, un seul interlocuteur du premier échange au lancement.</p></div>
+      <div class="method">
+        <div class="reveal"><span class="n">01</span><h3>Audit offert</h3><p>Nous analysons votre présence et identifions ce qui compte vraiment.</p></div>
+        <div class="reveal"><span class="n">02</span><h3>Proposition</h3><p>Une recommandation claire, chiffrée, construite à partir de vos priorités.</p></div>
+        <div class="reveal"><span class="n">03</span><h3>Création</h3><p>Site, films, campagnes : nous produisons, vous validez à chaque étape.</p></div>
+        <div class="reveal"><span class="n">04</span><h3>Lancement et suivi</h3><p>Mise en ligne, pilotage des résultats et ajustements continus.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block devis" id="devis" aria-labelledby="h-d">
+    <div class="wrap">
+      <p class="kicker c reveal">DEVIS</p>
+      <h2 class="reveal" id="h-d">Parlons de votre maison.</h2>
+      <p class="lead reveal">Quelques mots suffisent. Nous revenons vers vous sous 24 heures avec une première proposition.</p>
+      <form class="box" id="quote" novalidate>
+        <div class="grid2">
+          <label>NOM<input name="nom" autocomplete="name" required></label>
+          <label>MAISON<input name="societe" autocomplete="organization"></label>
+          <label>EMAIL<input type="email" name="email" autocomplete="email" required></label>
+          <label>TÉLÉPHONE<input type="tel" name="tel" autocomplete="tel"></label>
+          <label class="full">VOTRE PROJET EN QUELQUES MOTS<textarea name="msg"></textarea></label>
+        </div>
+        <p class="err" id="err" role="alert"></p>
+        <div class="actions"><button type="submit" class="btn">ENVOYER MA DEMANDE</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="row"><span>MAISON DIGITALE DU LUXE</span><span><a href="#services">SERVICES</a> &nbsp;&nbsp; <a href="#devis">DEVIS</a></span></div>
+  <div class="word" aria-hidden="true">AIMJI</div>
+  <div class="legal"><span>© 2026 AIMJI STUDIO</span><span>LUXE ET INTELLIGENCE ARTIFICIELLE</span></div>
+</footer>
+
+<script>
+(function(){
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+
+/* Univers calés sur le film (secondes) */
+const U=[
+  {n:'Joaillerie et horlogerie', a:1.6,  b:5.4,  c:['Films IA en macro','Campagnes ciblées','E‑boutique sur mesure']},
+  {n:'Immobilier',               a:5.8,  b:8.6,  c:['Films et visites IA','Acquéreurs internationaux','Site par programme']},
+  {n:'Hôtellerie',               a:8.9,  b:10.6, c:['Réservation directe','Contenus qui font voyager','Concierge IA jour et nuit']},
+  {n:'Gastronomie',              a:11.0, b:14.5, c:['Référencement local','Réseaux sociaux','Réservation en ligne']},
+  {n:'Beauté',                   a:14.9, b:17.6, c:['UGC et ambassadrices','Lancements produit','E‑mailing']},
+  {n:'Mode',                     a:17.9, b:19.6, c:['Films de collection','Campagnes d\u2019influence','E‑shop sur mesure']},
+  {n:'Automobile',               a:19.9, b:22.6, c:['Site et configurateur','Génération de leads','Films IA']},
+  {n:'Yachting',                 a:22.9, b:25.6, c:['Charter et vente','Audience internationale','Contenus premium']},
+  {n:'Aviation',                 a:25.9, b:30.1, c:['Clientèle privée','Agents IA de réservation','Image de marque']}
+];
+
+const film=document.querySelector('.film'), v=document.getElementById('film');
+const chWrap=document.getElementById('chapters'), co=document.getElementById('callouts'), rail=document.getElementById('rail');
+const intro=document.getElementById('intro'), hint=document.getElementById('hint'), loading=document.getElementById('loading');
+U.forEach((u,i)=>{
+  const d=document.createElement('div'); d.className='chapter';
+  const idx=document.createElement('p'); idx.className='idx'; idx.textContent=String(i+1).padStart(2,'0')+' / 09';
+  const h=document.createElement('h2'); h.textContent=u.n; d.append(idx,h); chWrap.appendChild(d); u.el=d;
+  const s=document.createElement('span'); const f=document.createElement('i'); s.appendChild(f); rail.appendChild(s); u.bar=f;
+});
+let current=-1;
+function setCallouts(i){
+  co.classList.remove('on'); co.textContent='';
+  if(i<0) return;
+  U[i].c.forEach(t=>{ const li=document.createElement('li'); li.textContent=t.toUpperCase(); co.appendChild(li); });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>co.classList.add('on')));
+}
+
+let dur=30, target=0, cur=0, ready=false;
+function readScroll(){ const r=film.getBoundingClientRect(), span=r.height-innerHeight; target=span>0?clamp(-r.top/span):0; }
+function ui(t){
+  intro.classList.toggle('off', t>1.4);
+  hint.style.opacity = t>.4?0:1;
+  let idx=-1;
+  U.forEach((u,i)=>{ const on=t>=u.a && t<u.b; u.el.classList.toggle('on',on); if(on) idx=i;
+    u.bar.style.transform='scaleX('+clamp((t-u.a)/(u.b-u.a))+')'; });
+  if(idx!==current){ current=idx; setCallouts(idx); }
+}
+let lastSet=-1;
+function loop(){
+  cur += (target-cur)*(reduce?1:.12);
+  const t=cur*(dur-.05);
+  if(ready && Math.abs(t-lastSet)>1/48){ try{ v.currentTime=t; }catch(e){} lastSet=t; }
+  ui(t);
+  requestAnimationFrame(loop);
+}
+function onReady(){
+  if(ready) return; ready=true; dur=v.duration||30; loading.style.opacity=0;
+}
+v.addEventListener('loadedmetadata',onReady);
+v.addEventListener('loadeddata',onReady);
+v.addEventListener('error',()=>{ loading.textContent='LE FILM N\u2019A PAS PU SE CHARGER'; });
+/* iOS : amorcer le décodage */
+v.play().then(()=>v.pause()).catch(()=>{});
+if(v.readyState>=1) onReady();
+addEventListener('scroll',readScroll,{passive:true}); addEventListener('resize',readScroll);
+readScroll(); loop();
+
+/* Apparitions */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* Devis */
+const form=document.getElementById('quote'), err=document.getElementById('err');
+form.addEventListener('submit',e=>{ e.preventDefault();
+  const nom=form.nom.value.trim(), em=form.email.value.trim();
+  if(!nom){ err.textContent='Indiquez votre nom.'; form.nom.focus(); return; }
+  if(!/^\S+@\S+\.\S+$/.test(em)){ err.textContent='Indiquez une adresse email valide.'; form.email.focus(); return; }
+  const p=document.createElement('p'); p.className='done'; p.textContent='Demande envoyée.';
+  const q=document.createElement('p'); q.textContent='Merci '+nom+'. Nous revenons vers vous sous 24 heures.';
+  form.replaceChildren(p,q); });
+})();
+</script>
+</body>
+</html>
