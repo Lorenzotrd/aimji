@@ -33,6 +33,8 @@ a{color:inherit}
 .nav ul a:hover{opacity:1}
 .nav .cta{border:1px solid rgba(244,242,238,.4); padding:.75rem 1.4rem; border-radius:999px; opacity:1}
 @media (max-width:720px){ .nav ul li:not(:last-child){display:none} }
+.nav .cta{white-space:nowrap}
+@media (max-width:720px){ .nav{padding:calc(env(safe-area-inset-top,0px) + 1rem) 1.25rem 1rem; background:linear-gradient(180deg,rgba(5,5,7,.92),rgba(5,5,7,.7) 70%,rgba(5,5,7,0)); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)} .nav .mark{font-size:1.3rem; letter-spacing:.3em} .nav ul{font-size:.66rem; letter-spacing:.14em} .nav .cta{padding:.65rem 1.1rem} }
 
 /* Film au scroll */
 .film{position:relative; height:1100vh; background:var(--noir)}
@@ -47,7 +49,7 @@ a{color:inherit}
 .intro h1{font-family:var(--display); font-weight:300; font-size:clamp(3.4rem,9vw,8.4rem); line-height:.9; letter-spacing:-.015em; margin:0 0 1.6rem}
 .intro p{margin:0; max-width:34ch; color:rgba(244,242,238,.82)}
 
-.chapter{position:absolute; left:clamp(1.25rem,6vw,6.5rem); bottom:clamp(4.5rem,12vh,8rem); opacity:0; transform:translateY(20px); transition:opacity .9s cubic-bezier(.19,1,.22,1), transform .9s cubic-bezier(.19,1,.22,1); pointer-events:none}
+.chapter{position:absolute; left:clamp(1.25rem,6vw,6.5rem); bottom:clamp(3.2rem,7vh,5rem); opacity:0; transform:translateY(20px); transition:opacity .9s cubic-bezier(.19,1,.22,1), transform .9s cubic-bezier(.19,1,.22,1); pointer-events:none}
 .chapter.on{opacity:1; transform:none}
 .chapter .idx{font-size:.75rem; letter-spacing:.26em; color:var(--champagne); margin:0 0 1rem; font-variant-numeric:tabular-nums}
 .chapter h2{font-family:var(--display); font-weight:300; font-size:clamp(3rem,8vw,7.6rem); line-height:.9; letter-spacing:-.02em; margin:0}
@@ -59,7 +61,34 @@ a{color:inherit}
 .callouts.on li{opacity:1; transform:none}
 .callouts.on li:nth-child(2){transition-delay:.12s}
 .callouts.on li:nth-child(3){transition-delay:.24s}
-@media (max-width:720px){ .callouts{top:auto; bottom:clamp(11rem,26vh,15rem); right:1.25rem; gap:.9rem} .callouts li{font-size:.68rem} }
+.stage{--vt:0px; --vh:100%}
+@media (max-aspect-ratio:1/1){
+  .stage{height:100vh; height:100svh; --vt:max(calc(env(safe-area-inset-top,0px) + 4.75rem), calc((100svh - var(--vh)) / 2 - 2.5rem)); --vh:min(50svh,78vw)}
+  .stage .rail{top:calc(var(--vt) + var(--vh) + 10.4rem); bottom:auto; left:1.25rem; right:1.25rem; transform:none; transition:opacity .8s}
+  .stage .rail span{flex:1; width:auto}
+  .stage .intro:not(.off) ~ .rail{opacity:0}
+  .stage video{top:var(--vt); bottom:auto; height:var(--vh); object-fit:cover; object-position:50% 50%}
+  .shade{top:var(--vt); bottom:auto; height:var(--vh); background:linear-gradient(180deg,var(--noir),rgba(5,5,7,0) 16%,rgba(5,5,7,0) 80%,var(--noir))}
+  .loading{top:var(--vt); bottom:auto; height:var(--vh)}
+  .intro,.chapter{left:1.25rem; right:1.25rem; top:calc(var(--vt) + var(--vh) + 2.4rem); bottom:auto; max-width:none}
+  .intro h1{font-size:clamp(2.6rem,12.5vw,4.4rem); margin-bottom:1rem}
+  .intro p{font-size:.95rem; max-width:32ch}
+  .chapter .idx{margin-bottom:.7rem}
+  .chapter h2{font-size:clamp(2.3rem,10.5vw,3.8rem); line-height:.95}
+  .callouts{left:1.25rem; right:1.25rem; top:auto; bottom:calc(env(safe-area-inset-bottom,0px) + 3.6rem); transform:none; gap:.75rem}
+  .callouts li{justify-content:flex-start; gap:.75rem; font-size:.66rem; letter-spacing:.16em; transform:translateY(8px)}
+  .callouts li::after{order:-2; margin-right:0}
+  .callouts li::before{order:-1; width:1.6rem; background:var(--champagne); opacity:.6}
+  .hint{display:none}
+}
+.callouts{display:none !important}
+@media (max-aspect-ratio:1/1){ .intro .kicker{font-size:.62rem; letter-spacing:.22em; white-space:nowrap} }
+@media (min-aspect-ratio:1/1) and (max-height:520px){
+  .intro{bottom:3.2rem; max-width:24rem} .intro h1{font-size:2.8rem; margin-bottom:.8rem} .intro p{font-size:.85rem} .intro .kicker{white-space:nowrap}
+  .chapter{bottom:3rem} .chapter h2{font-size:2.6rem} .chapter .idx{margin-bottom:.5rem}
+  .callouts{gap:.7rem} .callouts li{font-size:.6rem; gap:.6rem} .callouts li::before{width:1.8rem}
+  .hint{display:none} .rail{bottom:1rem}
+}
 
 .rail{position:absolute; left:50%; bottom:calc(env(safe-area-inset-bottom,0px) + 1.4rem); transform:translateX(-50%); display:flex; gap:.5rem}
 .rail span{width:1.8rem; height:2px; background:rgba(244,242,238,.18); overflow:hidden; position:relative}
@@ -84,8 +113,8 @@ section.block{padding:clamp(7rem,18vh,12rem) clamp(1.25rem,6vw,6.5rem); backgrou
 @media (max-width:560px){  }
 
 .svc{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:clamp(2rem,6vw,6rem)}
-@media (max-width:900px){ .svc{grid-template-columns:1fr} .svc .side{position:static; margin-bottom:1rem} }
 .svc .side{position:sticky; top:8rem; align-self:start}
+@media (max-width:900px){ .svc{grid-template-columns:1fr} .svc .side{position:static; margin-bottom:1rem} }
 .svc .side h2{font-family:var(--display); font-weight:300; font-size:clamp(2.6rem,5vw,4.6rem); line-height:1; margin:0 0 1.6rem; max-width:10ch}
 .svc .side p{color:#A7ADB6; max-width:30ch; margin:0}
 .svc ul{list-style:none; margin:0; padding:0; border-top:1px solid var(--line)}
@@ -107,7 +136,29 @@ section.block{padding:clamp(7rem,18vh,12rem) clamp(1.25rem,6vw,6.5rem); backgrou
 .method p{margin:0; color:#A7ADB6; font-size:.93rem}
 
 .devis{position:relative; overflow:hidden}
-.devis::before{content:""; position:absolute; left:50%; top:-30%; width:120vmax; height:80vmax; transform:translateX(-50%); background:radial-gradient(closest-side,rgba(62,63,70,.55),rgba(5,5,7,0)); pointer-events:none}
+.devis::before{content:""; position:absolute; inset:0; background:radial-gradient(ellipse 70% 40% at 50% 38%,rgba(62,63,70,.38),rgba(5,5,7,0) 72%); pointer-events:none}
+.devis .box{max-width:680px; margin:3.4rem auto 0}
+.devis .ask{font-size:.68rem; letter-spacing:.24em; color:var(--brume); text-align:center; margin:0 0 1.1rem}
+.devis .chips{margin-bottom:2.6rem}
+.devis .chips span{font-size:.82rem; padding:.7rem 1.2rem}
+.fl{position:relative; display:block}
+.fl input,.fl textarea{display:block; width:100%; font:inherit; font-size:1rem; color:var(--fg); background:transparent; border:0; border-bottom:1px solid rgba(244,242,238,.2); padding:1.5rem 0 .6rem; border-radius:0; transition:border-color .4s}
+.fl textarea{min-height:4.6rem; resize:vertical}
+.fl input:focus,.fl textarea:focus{outline:0; border-bottom-color:var(--champagne)}
+.fl span{position:absolute; left:0; top:1.5rem; font-size:.95rem; color:rgba(244,242,238,.45); pointer-events:none; transform-origin:left top; transition:transform .45s cubic-bezier(.19,1,.22,1), color .45s, letter-spacing .45s}
+.fl input:focus + span,.fl input:not(:placeholder-shown) + span,.fl textarea:focus + span,.fl textarea:not(:placeholder-shown) + span{transform:translateY(-1.25rem) scale(.72); letter-spacing:.2em; color:var(--champagne)}
+.fields{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.2rem 2.4rem}
+.fields .full{grid-column:1 / -1}
+@media (max-width:640px){ .fields{grid-template-columns:1fr; gap:.9rem} }
+.devis .actions{margin-top:2.4rem}
+.btn.gold{background:var(--champagne); border-color:var(--champagne); color:var(--noir)}
+.btn.gold:hover{background:var(--ecume); border-color:var(--ecume)}
+@media (max-width:640px){ .devis .actions .btn{width:100%} }
+.discret{font-size:.78rem; color:var(--brume); text-align:center; margin:1.2rem 0 0}
+.other{margin-top:2.6rem; display:flex; justify-content:center; flex-wrap:wrap; gap:.6rem 2.2rem; font-size:.7rem; letter-spacing:.22em}
+.other span{color:var(--brume); width:100%; text-align:center; margin-bottom:.4rem}
+.other a{text-decoration:none; color:var(--fg); border-bottom:1px solid rgba(201,174,120,.5); padding-bottom:.3rem; transition:color .4s, border-color .4s}
+.other a:hover{color:var(--champagne); border-color:var(--champagne)}
 .devis .wrap{position:relative; max-width:820px; text-align:center}
 .devis h2{font-family:var(--display); font-weight:300; font-size:clamp(3rem,7vw,6.4rem); line-height:.95; letter-spacing:-.015em; margin:0 0 1.6rem}
 .devis .lead{color:#A7ADB6; margin:0 auto; max-width:38ch}
@@ -213,26 +264,31 @@ footer .legal{display:flex; justify-content:space-between; flex-wrap:wrap; gap:1
 
   <section class="block devis" id="devis" aria-labelledby="h-d">
     <div class="wrap">
-      <p class="kicker c reveal">DEVIS</p>
+      <p class="kicker c reveal">PREMIER ÉCHANGE</p>
       <h2 class="reveal" id="h-d">Parlons de votre maison.</h2>
       <p class="lead reveal">Quelques mots suffisent. Nous revenons vers vous sous 24 heures avec une première proposition.</p>
-      <form class="box" id="quote" novalidate>
-        <div class="grid2">
-          <label>NOM<input name="nom" autocomplete="name" required></label>
-          <label>MAISON<input name="societe" autocomplete="organization"></label>
-          <label>EMAIL<input type="email" name="email" autocomplete="email" required></label>
-          <label>TÉLÉPHONE<input type="tel" name="tel" autocomplete="tel"></label>
-          <label class="full">VOTRE PROJET EN QUELQUES MOTS<textarea name="msg"></textarea></label>
+      <form class="box reveal" id="quote" novalidate>
+        <div class="fields">
+          <label class="fl"><input name="nom" autocomplete="name" placeholder=" " required><span>Nom</span></label>
+          <label class="fl"><input name="societe" autocomplete="organization" placeholder=" "><span>Maison</span></label>
+          <label class="fl"><input type="email" name="email" autocomplete="email" placeholder=" " required><span>Email</span></label>
+          <label class="fl"><input type="tel" name="tel" autocomplete="tel" placeholder=" "><span>Téléphone</span></label>
+          <label class="fl full"><textarea name="msg" placeholder=" "></textarea><span>Votre projet en quelques mots</span></label>
         </div>
         <p class="err" id="err" role="alert"></p>
-        <div class="actions"><button type="submit" class="btn">ENVOYER MA DEMANDE</button></div>
+        <div class="actions"><button type="submit" class="btn gold">ENVOYER MA DEMANDE</button></div>
+        <p class="discret">Échange confidentiel. Accord de confidentialité sur simple demande.</p>
       </form>
+      <div class="other reveal">
+        <span>OU PAR EMAIL</span>
+        <a href="mailto:contact@aimji-studio.com">CONTACT@AIMJI-STUDIO.COM</a>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="row"><span>MAISON DIGITALE DU LUXE</span><span><a href="#services">SERVICES</a> &nbsp;&nbsp; <a href="#devis">DEVIS</a></span></div>
+  <div class="row"><span>MAISON DIGITALE DU LUXE</span><span><a href="#services">SERVICES</a> &nbsp;&nbsp; <a href="#devis">CONTACT</a></span></div>
   <div class="word" aria-hidden="true">AIMJI</div>
   <div class="legal"><span>© 2026 AIMJI STUDIO</span><span>LUXE ET INTELLIGENCE ARTIFICIELLE</span></div>
 </footer>
