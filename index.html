@@ -36,6 +36,12 @@ a{color:inherit}
 .nav .cta{border:1px solid rgba(244,242,238,.4); padding:.75rem 1.4rem; border-radius:999px; opacity:1}
 @media (max-width:720px){ .nav ul li:not(:last-child):not(.lang){display:none} }
 .nav .cta{white-space:nowrap}
+.nav .lang{display:flex; align-items:center; gap:.45em; border:1px solid rgba(244,242,238,.22); border-radius:999px; padding:.5rem .85rem}
+.nav .lang a, .nav .lang span{opacity:.45}
+.nav .lang a:hover{opacity:1}
+.nav .lang [aria-current]{opacity:1}
+.nav .lang .sep{opacity:.3}
+@media (max-width:720px){ .nav ul{gap:.9rem} .nav .lang{border:0; padding:0; gap:.35em} }
 @media (max-width:720px){ .nav{padding:calc(env(safe-area-inset-top,0px) + 1rem) 1.25rem 1rem; background:linear-gradient(180deg,rgba(5,5,7,.92),rgba(5,5,7,.7) 70%,rgba(5,5,7,0)); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)} .nav .mark{font-size:1.3rem; letter-spacing:.3em} .nav ul{font-size:.66rem; letter-spacing:.14em} .nav .cta{padding:.65rem 1.1rem} }
 
 /* Film au scroll */
@@ -212,7 +218,7 @@ footer .legal{display:flex; justify-content:space-between; flex-wrap:wrap; gap:1
   <ul>
     <li><a href="#maison">La maison</a></li>
     <li><a href="#services">Services</a></li>
-    <li class="lang"><a href="/en" hreflang="en" lang="en" aria-label="English version">EN</a></li>
+    <li class="lang"><span aria-current="true">FR</span><span class="sep" aria-hidden="true">/</span><a href="/en" hreflang="en" lang="en" aria-label="English version">EN</a></li>
     <li><a class="cta" href="#devis">Demander un devis</a></li>
   </ul>
 </nav>
